@@ -85,7 +85,12 @@ async function callClaude(){
     "content-type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01",
     "anthropic-dangerous-direct-browser-access":"true"},
     body:JSON.stringify({model:MODEL,max_tokens:4096,system:SYSTEM,tools:TOOLS,messages})});
-  if(!r.ok){ if(r.status===401){apiKey="";sessionStorage.removeItem("apikey");} throw new Error(r.status); }
+  if(!r.ok){
+    if(r.status===401){apiKey="";sessionStorage.removeItem("apikey");}
+    let detail=""; try{ detail=(await r.json()).error.message }catch{}
+    messages.pop(); // fehlgeschlagene Nutzernachricht nicht im Verlauf behalten
+    throw new Error(r.status+(detail?": "+detail:""));
+  }
   return r.json();
 }
 async function ask(text){
