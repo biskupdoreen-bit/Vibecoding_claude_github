@@ -22,3 +22,11 @@ Dann http://localhost:8000 öffnen. Tests: `pytest`.
 - Gespräche/Tickets in einer Datenbank mit Löschkonzept speichern (aktuell nur im Speicher bzw. Datei).
 - Mieter-Authentifizierung (Login/Magic-Link), damit Auskünfte zu Verträgen nur an Berechtigte gehen.
 - Notfallnummer prominent einblenden; Bot gibt keine Rechtsauskunft.
+
+## Variante ohne Server: eine einzelne HTML-Datei
+`mieter-chatbot.html` läuft ohne Backend direkt im Browser (Datei öffnen oder irgendwo hochladen).
+Neu erzeugen nach Änderungen an `knowledge/hausverwaltung.md`: `python3 standalone/build.py`.
+
+**Wichtig:** Der API-Key wird beim ersten Senden abgefragt und liegt dann im Browser. Diese Variante ist nur für
+eigene Tests gedacht – nicht für Mieter veröffentlichen, sonst kann jeder den Key missbrauchen. Tickets bleiben im
+Browser (localStorage); der Button „Tickets exportieren“ lädt sie als `tickets.json` herunter.
