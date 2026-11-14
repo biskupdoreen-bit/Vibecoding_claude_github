@@ -1,11 +1,13 @@
-"""Erzeugt mieter-chatbot.html (eine Datei) aus template.html + knowledge/hausverwaltung.md."""
+"""Erzeugt mieter-chatbot.html (eine Datei) aus template.html.
+Die Adresse des Proxys kommt aus der Umgebungsvariable PROXY_URL, z. B.
+  PROXY_URL=https://mieter-chatbot-proxy.DEIN-NAME.workers.dev python3 standalone/build.py
+Wissen und Systemprompt liegen im Worker (worker/), nicht mehr in der HTML-Datei."""
 import json
+import os
 from pathlib import Path
 
 root = Path(__file__).parent.parent
-knowledge = (root / "knowledge" / "hausverwaltung.md").read_text(encoding="utf-8")
+url = os.environ.get("PROXY_URL") or "https://BITTE-PROXY-URL-EINTRAGEN.workers.dev"
 html = (Path(__file__).parent / "template.html").read_text(encoding="utf-8")
-# "</" escapen, damit der Text das <script>-Tag nicht beenden kann
-js = json.dumps(knowledge, ensure_ascii=False).replace("</", "<\\/")
-(root / "mieter-chatbot.html").write_text(html.replace("__KNOWLEDGE__", js), encoding="utf-8")
-print("mieter-chatbot.html erzeugt")
+(root / "mieter-chatbot.html").write_text(html.replace("__PROXY_URL__", json.dumps(url)), encoding="utf-8")
+print("mieter-chatbot.html erzeugt, Proxy:", url)

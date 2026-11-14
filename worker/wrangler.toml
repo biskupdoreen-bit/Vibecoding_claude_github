@@ -1,0 +1,32 @@
+name = "mieter-chatbot-proxy"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+# Markdown-Dateien (Wissensbasis) als Text einbinden
+[[rules]]
+type = "Text"
+globs = ["**/*.md"]
+fallthrough = true
+
+[vars]
+# Erlaubte Herkunft der Chat-Seite (genau so wie im Browser, ohne Pfad), z. B. https://DEIN-NAME.github.io
+ALLOWED_ORIGIN = "https://biskupdoreen-bit.github.io"
+MODEL = "claude-opus-5-5"
+# Limits (pro Besucher/IP und insgesamt)
+LIMIT_PER_MINUTE = "6"
+LIMIT_PER_IP_DAY = "40"
+LIMIT_GLOBAL_DAY = "500"
+
+# Zähler für die Limits (Durable Object, im kostenlosen Tarif nutzbar)
+[[durable_objects.bindings]]
+name = "LIMITER"
+class_name = "Limiter"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Limiter"]
+
+# Geheimnisse NICHT hier eintragen, sondern per:
+#   npx wrangler secret put ANTHROPIC_API_KEY
+#   npx wrangler secret put RESEND_API_KEY
+#   npx wrangler secret put NOTIFY_EMAIL     (Empfänger der Tickets)

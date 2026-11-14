@@ -23,10 +23,7 @@ Dann http://localhost:8000 öffnen. Tests: `pytest`.
 - Mieter-Authentifizierung (Login/Magic-Link), damit Auskünfte zu Verträgen nur an Berechtigte gehen.
 - Notfallnummer prominent einblenden; Bot gibt keine Rechtsauskunft.
 
-## Variante ohne Server: eine einzelne HTML-Datei
-`mieter-chatbot.html` läuft ohne Backend direkt im Browser (Datei öffnen oder irgendwo hochladen).
-Neu erzeugen nach Änderungen an `knowledge/hausverwaltung.md`: `python3 standalone/build.py`.
-
-**Wichtig:** Der API-Key wird beim ersten Senden abgefragt und liegt dann im Browser. Diese Variante ist nur für
-eigene Tests gedacht – nicht für Mieter veröffentlichen, sonst kann jeder den Key missbrauchen. Tickets bleiben im
-Browser (localStorage); der Button „Tickets exportieren“ lädt sie als `tickets.json` herunter.
+## Variante ohne eigenen Server: HTML-Seite + Proxy
+- `mieter-chatbot.html` (gebaut mit `python3 standalone/build.py`, wird per GitHub Pages veröffentlicht) enthält nur die Oberfläche.
+- Der API-Key, Systemprompt, Wissen und Tools liegen im Cloudflare Worker unter `worker/` (Anleitung: `worker/README.md`).
+- Tickets kommen per E-Mail an die Verwaltung. Limits pro Minute, Besucher und Tag schützen das Budget.

@@ -23,6 +23,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: HTML bauen
+        env:
+          PROXY_URL: ${{ vars.PROXY_URL }}
         run: |
           python3 standalone/build.py
           mkdir _site
